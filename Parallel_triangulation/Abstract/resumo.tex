@@ -1,0 +1,33 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuges]{babel}
+\usepackage{geometry}
+
+\title{Estratégias de Paralelização de Estruturas de Dados Sequenciais}
+\date{}
+\author{Ikaro Ruan Penha Costa \\
+	Prof. Vicente Helano Feitosa Batista Sobrinho}
+\begin{document}
+\maketitle
+
+Assume-se que os atuais processadores têm chegado aos seus limites de desempenho, o que fomentou o uso da programação concorrente. 
+Assim, o presente trabalho tem por objetivo desenvolver algoritmos paralelos a partir de versões sequenciais de estruturas de 
+dados de listas encadeadas e de triangulações de Delaunay. Com uso do API OpenMP, inicialmente estudou-se estratégias de 
+paralelização da inserção na lista encadeada, a qual o número de elementos a serem inseridos  seria dividido o mais igualmente 
+possível entre os threads, núcleos de processamento, para inserção na estrutura de dado. Nesse sentido, cada thread teria uma sublista, 
+na qual  os seus respectivos elementos são inseridos, e ao final todas as sublistas seriam conectadas formando a lista resultante. 
+Ademais, a operação de busca foi paralelizada semelhantemente, ou seja, cada thread seria responsável por uma seção da lista, o 
+que demonstrou resultados diretos na remoção.  Similarmente para a triangulação, um conjunto de pontos seria dividido entre os threads,
+para a execução da localização e posterior inserção. Como a inserção na lista e a localização de pontos não necessitam de maiores 
+sincronizações, por haver apenas modificação no que seja de propriedade do thread ou apenas leituras na estrutura de dados, 
+foi proposta uma estratégia lock-free, sem uso de travas. Isso possibilitou a obtenção de speedups, em uma máquina com quatro 
+núcleos de processamento, de 1,20 para inserção de cinco milhões de números inteiros na lista encadeada, de 3,79 para remoção, 
+buscando aleatoriamente 20.000 dos seus elementos, e de 2,27 para localização de 30.000 pontos em uma triangulação de Delaunay 
+de 100.000 vértices. Contudo, os passos seguintes da inserção na triangulação, construção da região de conflito e atualização,
+alteram diretamente a sua estrutura de dados, o que implica no uso de travas para gerir as sincronizações. A partir desse passo,
+houve perda de desempenho que gerou resultados insatisfatórios para uma estratégia paralela. Em vista disso, como trabalho futuro 
+estuda-se a proposição de outras estratégias de paralelização a serem usadas na inserção incremental em uma triangulação de Delaunay. \\
+
+\textbf{Palavras-chave:} Algoritmos paralelos. Estruturas de dados. Lista encadeada. Triangulação de Delaunay. \\
+
+\end{document}

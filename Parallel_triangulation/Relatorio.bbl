@@ -1,0 +1,63 @@
+\begin{thebibliography}{10}
+
+\bibitem{bowyer}
+Adrian Bowyer.
+\newblock Computing dirichlet tessellations.
+\newblock {\em The computer journal}, 24(2):162--166, 1981.
+
+\bibitem{watson}
+David~F Watson.
+\newblock Computing the n-dimensional delaunay tessellation with application to
+  voronoi polytopes.
+\newblock {\em The computer journal}, 24(2):167--172, 1981.
+
+\bibitem{batista}
+Vicente~HF Batista, David~L Millman, Sylvain Pion, and Johannes Singler.
+\newblock Parallel geometric algorithms for multi-core computers.
+\newblock {\em Computational Geometry}, 43(8):663--677, 2010.
+
+\bibitem{kohout}
+Josef Kohout, Ivana Kolingerov{\'a}, and Ji{\v{r}}{\'\i} {\v{Z}}{\'a}ra.
+\newblock Parallel delaunay triangulation in e 2 and e 3 for computers with
+  shared memory.
+\newblock {\em Parallel Computing}, 31(5):491--522, 2005.
+
+\bibitem{kohoutthesis}
+Josef Kohout.
+\newblock {\em Delaunay triangulation in parallel and distributed environment}.
+\newblock PhD thesis, PhD Thesis, University of West Bohemia, Pillsen, Czech
+  Republic, 2005.
+
+\bibitem{cignoni}
+Paolo Cignoni, Claudio Montani, Raffaele Perego, and Roberto Scopigno.
+\newblock Parallel 3d delaunay triangulation.
+\newblock In {\em Computer Graphics Forum}, volume~12, pages 129--142. Wiley
+  Online Library, 1993.
+
+\bibitem{openmp_manual}
+OpenMP Architecture~Review Board.
+\newblock {\em OpenMP Application Programming Interface}, 2015.
+
+\bibitem{chapman}
+Barbara Chapman, Gabriele Jost, and Ruud Van Der~Pas.
+\newblock {\em Using OpenMP: portable shared memory parallel programming},
+  volume~10.
+\newblock MIT press, 2008.
+
+\bibitem{williams}
+Anthony Williams.
+\newblock {\em C++ concurrency in action}.
+\newblock London, 2012.
+
+\bibitem{shewchuk}
+Jonathan Richard~Shewchuk.
+\newblock Adaptive precision floating-point arithmetic and fast robust
+  geometric predicates.
+\newblock {\em Discrete \& Computational Geometry}, 18(3):305--363, 1997.
+
+\bibitem{cgal}
+{The CGAL Project}.
+\newblock {\em {CGAL} User and Reference Manual}.
+\newblock {CGAL Editorial Board}, {4.10} edition, 2017.
+
+\end{thebibliography}

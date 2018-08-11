@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2016/dev)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Relatorio.aux
+The style file: unsrt.bst
+Database file #1: references.bib
+Warning--can't use both volume and number fields in cignoni
+You've used 11 entries,
+            1791 wiz_defined-function locations,
+            515 strings with 4992 characters,
+and the built_in function-call counts, 2344 in all, are:
+= -- 219
+> -- 78
+< -- 3
++ -- 32
+- -- 21
+* -- 154
+:= -- 369
+add.period$ -- 33
+call.type$ -- 11
+change.case$ -- 7
+chr.to.int$ -- 0
+cite$ -- 12
+duplicate$ -- 110
+empty$ -- 242
+format.name$ -- 21
+if$ -- 521
+int.to.chr$ -- 0
+int.to.str$ -- 11
+missing$ -- 12
+newline$ -- 57
+num.names$ -- 11
+pop$ -- 34
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 41
+stack$ -- 0
+substring$ -- 157
+swap$ -- 25
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 24
+width$ -- 13
+write$ -- 121
+(There was 1 warning)

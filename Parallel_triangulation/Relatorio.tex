@@ -1,0 +1,383 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[portuges]{babel}
+%\usepackage{hyphenat}
+\usepackage{ragged2e}
+\usepackage{setspace}
+\usepackage{pgfplots}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{tabularx}
+
+
+%\setstretch{1.5}
+%\hyphenation{ar-ma-ze-na-gem}
+%\hyphenation{mo-der-nos}
+%\hyphenation{po-de-rão}
+%\hyphenation{ci-en-tí-fi-cos}
+%\hyphenation{o-pe-ra-çõ-es}
+
+\title{ Relatório Final de Projeto
+	%\huge Algoritmos Paralelos para Triangulações de Delaunay de Ordem Superior 
+	%     Aplicados na Modelagem de Terrenos
+	}
+\date{}
+\author{ Vicente Helano Feitosa Batista Sobrinho \\
+	\texttt{vicente.sobrinho@ufca.edu.br}
+	\and
+	Ikaro Ruan Penha Costa \\
+	\texttt{ikaroruan@outlook.com}
+	}
+
+\begin{document}
+\maketitle
+
+\section*{Identificação do Projeto}
+\textbf{Título} \\
+Algoritmos paralelos para triangulações de Delaunay de ordem superior aplicados na modelagem de terrenos \\ \\
+\textbf{Edital de Referência} \\
+PIBIC Edital Nº02/2016
+
+\section*{Área do Conhecimento Predominante}
+Ciência da Computação
+
+\section*{Resumo}
+Diversos problemas científicos recaem no uso de geração de malhas para obtenção de uma modelagem matemática computacional. Dentre 
+essas malhas, as Triangulações de Delaunay são as mais covenientemente usadas devido suas caracteríscas da qualidade 
+dos triângulos formados. Muitos problemas modernos envolvem variadas superfícies e formas a serem modeladas, assim 
+como exigem maior acurácia em seus cálculos, o que requer maior desempenho computacional. Desse modo, uma alternativa 
+relacionada à melhora na performance de tais algoritmos consiste na Computação Paralela. Além disso, códigos 
+em paralelo, por ventura, necessitam de sincronizações para evitar possíveis erros lógicos, o que implica no estudo
+das estratégias de travas mais adequadas para a estrura de dados que armazena a triangulação. Portanto, 
+este trabalho tem o objetivo de produzir implementações paralelas de triangulações de Delaunay, de modo a permitir 
+avanços no desempenho de suas construções. \\
+
+\textbf{Palavras-chave:} Triangulação de Delaunay, algoritmos paralelos, estratégia de travas. \\
+
+\section*{Introdução}
+
+% Citar isso mesmo??
+% TODO: Melhorar essa Introdução
+
+Dentre as malhas triangulares, as triangulações de Delaunay representam aquelas que possuem triângulos de boa qualidade  
+em seu interior, ou seja, configuram-se por ângulos internos maximizados, e de menor qualidade no entorno de sua fronteira. 
+Isso dá-se pela propriedade do circuncírculo vazio, em que garante que o circuncírculo formado por qualquer triângulo de uma 
+triangulação \textit{T} não conterá outro ponto de \textit{T} em seu interior. \\
+
+Por conseguinte, mesmo podendo o algoritmo de Bowyer-Watson \cite{bowyer, watson} construir uma triangulação de Delaunay em $O(n logn)$, 
+algumas ocasiões podem demandar elevados tempos de execução, a depender da quantidade e da disposição espacial de seus pontos. Além disso, 
+considerando a conjuntura atual de microprocessadores, em que se pode ter chegado a um limite de desempenho, percebe-se a 
+necessidade do uso de \textit{Computação Paralela} para construção de triangulações com  alto desempenho. A partir do 
+paralelismo é possível repartir diferentes operações entre \textit{threads} (unidades de processamento), com o intuito de obter 
+reduções nos tempos de execução de uma triangulação. A essas reduções dá-se o nome de \textit{speedup}. \\
+
+Além disso, o algoritmo de inserção proposto por Bowyer-Watson configura-se por uma adição incremental de pontos. Ao inserir um ponto $P$ 
+na triangulação, este poderá estar em desacordo com a propriedade do circuncírculo. Logo, ao conjunto de faces de $T$ em que $P$ viola tal 
+propriedade, dá-se o nome de \textit{região de conflito}. Essa região compõe-se das faces que sofrerão alterações ao longo 
+da inserção de $P$. \\
+
+Contudo, considerando a paralelização da inserção, diferentes threads não poderão modificar mesmas regiões da triangulação, pois,
+como não se pode ter certeza da ordem de execução dos threads, alterações concorrentes de um mesmo elemento (face ou vértice)  
+podem ocasionar em resultados divergentes da correta triangulação a ser formada. Consequentemente, necessita-se de um modelo de 
+sincronização baseado em travas, que garantem a modificação ou o acesso único de threads por vez. A partir disso, nota-se 
+também a necessidade do estudo de mecanismos de travas que sejam capazes de oferecer speedups eficientemente de acordo com a 
+implementação paralela em questão. \\
+
+
+
+\section*{Justificativa}
+\justify
+Devido à grande aplicabilidade de triangulações de Delaunay em problemas científicos, especialmente na modelagem de terrenos,
+torna-se viável o estudo de técnicas de suas contruções de modo a garantir melhor desempenho. Desse modo, estudos que exigem maior 
+precisão em seus dados demandarão maior poder de processamento, de modo a refletir no tempo de execução do processo de construção da triangulação.
+Nesse sentido, considerando as atuais limitações no desempenho de processadores, é importante o estudo de técnicas de paralelização 
+da contrução de triangulações de Delaunay com a finalidade de obter melhores desempenhos a partir de microprocessadores 
+com memória compartilhada. \\
+
+\section*{Referencial Teórico}
+Estudos tem demonstrado bons resultados quanto à paralelização de algoritmos para problemas geométricos, incluindo triangulações de 
+Delaunay. Nesse sentido, Batista et al. \cite{batista} demonstrou a possibilidade de paralelização da inserção incremental a partir 
+da \textsc{cgal}, assim utilizando métodos que permitam maior acesso concorrente de faces na localização, dentre eles o de 
+travas melhoradas. Já Kohout \cite{kohout} apresenta tanto métodos de inserção paralela diferentes como de travamento e oference, ainda,
+maiores detalhes em sua tese de doutorado \cite{kohoutthesis}. Cignoni et al. \cite{cignoni} apresentou resultados favoráveis para
+triangulações de Delaunay tridimensionais a partir da construção incremental. \\
+
+Vale ressaltar que o \texttt{omp\_lock\_t} foi a trava usada em OpenMP, seguindo especificações apresentadas pelo OpenMP Review Board
+\cite{openmp_manual} e sugestões de uso de Chapman et al. \cite{chapman}. Enquanto o \texttt{std::mutex} é a trava usada para implementação
+em C++ Threads, a partir do sugerido por Williams \cite{williams}. \\
+
+
+\section*{Objetivos}
+O objetivo consiste da implementação de algoritmos paralelos para construção de triangulações de Delaunay. Especificamente dispostos
+da seguinte maneira:
+
+\begin{itemize}
+	\item Determinar qual plataforma de desenvolvimento é mais adequada para esta situação: OpenMP, Intel TBB ou C++ Threads. (T)
+	\item Implementar os algoritmos paralelos de construção de triangulações de Delaunay de ordem superior usando a 
+		\textit{Computational Geometry Algorithm Library} - \textsc{cgal}. (P)
+\end{itemize}
+
+\section*{Metodologia}
+Inicialmente, foi implementado um algoritmo sequencial para construção de triangulações de Delaunay. Esse foi desenvolvido através 
+de uma estrutura de dados baseada em faces, a qual armazena vértices e faces, assim como cada vértice possui informação de uma 
+face incidente e cada face informações sobre suas vizinhas. A técnica de inserção empregada foi baseada em Bowyer-Watson, chamada
+de \textit{inserção incremental}, que foi dividida em três fases: localização, busca da região de conflito e atualização. A 
+localização consiste da  verificação da posição de um ponto $P$ a ser inserido na triangulação. Assim, de posse da localização, pode-se buscar 
+quais faces terão $P$ no interior seu circuncírculo associado, o que implica na construção da região de conflito. Em seguida, as faces 
+em conflito formarão uma cavidade na qual será inserido $P$ e novas faces serão formadas, consistindo da fase de atualização da triangulação. \\
+
+Os predicados geométricos para verificação de orientações de pontos
+e teste do circuncírculo vazio são provenientes da implementação de Shewchuk \cite{shewchuk}. Quanto ao armazenamento da triangulação, 
+foi utilizado o \textit{Compact Container} e, para melhor eficiência na inserção incremental, a ordenação espacial dos pontos a partir
+ do \textit{Spatial Sort}, ambos da \textsc{cgal} \cite{cgal}. \\
+
+Seguidamente, havia a necessidade de escolher a plataforma de desenvolvimento paralelo para essa situação. Assim, iniciou-se com 
+a implementação de uma estrutura de dados em \textit{lista encadeada} com inserção concorrente usando OpenMP, Intel TBB, 
+Intel CilkPlus e C++ Threads. De modo geral, tanto OpenMP quanto C++ Threads ofereceram maior liberdade para implementações
+paralelas, assim como travas próprias e ferramentas associadas às particularidades de suas plataformas. \\
+
+Nesse sentido, a ideia principal é de dividir os pontos a serem inseridos em conjuntos disjuntos, denominados \textit{workloads}, 
+de acesso exclusico por thread. Cada thread executará todos os passos da inserção (localização, região de conflito e atualização) até
+que tenham inserido todos os pontos de seus respectivos workloads. Entretanto, a necessidade de sincronização surge com a possibilidade
+de modificações simultâneas de uma mesmas regiões de conflito. \\
+
+Para isso, estratégias de travas foram estudadas para escolha da melhor forma de sincronização para inserção de pontos na triangulação. 
+Assim, possuindo cada vértice um \textit{lock} (trava) associado, quando uma face tiver seus três vértices travados, será considerada 
+travada. Dessa forma, consideram-se as seguintes estratégias: \\
+
+\begin{itemize}
+	\item Trava Simples: para leitura ou modificação de faces, deve-se travar todos os vértices de uma face.
+	\item Trava Simples com Prioridades: cada thread terá uma prioridade para travar os vértices. Caso um vértice esteja travado, 
+		o thread de maior prioridade deverá esperar até adquirir propriedade sobre ele, mas se for de menor prioridade estará
+		inapto para travamento, devendo desistir da inserção de $P$ momentaneamente e voltar a inseri-lo posteriormente.
+	\item Trava Melhorada: consiste em travar apenas um vértice da face para operações de leitura (para a localização) e 
+		todos os vértices da face para modificação (região de conflito e consequente atualização).
+\end{itemize}
+
+Deve-se notar que a Trava Simples com Prioridade foi baseada em Kohout \cite{kohout}, apesar de não ter tido o comportamento esperado 
+no algortimo aqui implementado, logo não foi considerado. Enquanto a Trava Melhorada em Batista \cite{batista}, que permite, assim, leitura simultânea
+durante a fase de localização. \\
+
+Dessa forma, torna-se importante a análise da eficiência da implementação paralela, de acordo com as estratégias de travas utilizadas,
+visando a obtenção de speedups.
+
+\section*{Resultados e Discussão}
+
+De início, as plataformas foram escolhidas foram OpenMP e C++ Threads por permitirem maior liberdade de implementação e maior número de
+ferramentas, incluindo de sincronizações. Para os teste de execução foram usadas distribuições uniformes de pontos no espaço em quantidade $2^k$, 
+em que $k$ varia entre $10$ e $20$, em uma máquina Dell com processador Intel Core i7-4510U, clock máximo 3,10 GHz, cache de 4MB e 4 CPUs.
+Nesse contexto, pode-se verificar na Figura \ref{exec:simples}, a qual apresenta resultados para estratégias de travas simples em 
+paralelo com quatro threads, que os resultados não foram satisfatórios, haja vista que não foram obtidos speedups. \\
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[
+  xlabel = {$k$, para $2^k$},
+  ylabel = {Tempo de execução (s)},
+  xmin = 15, xmax = 20,
+  ymin = 0, ymax = 300,
+  xtick = {},
+  ytick = {0, 50, 100, 150, 200, 250, 300},
+  legend pos = outer north east,
+  ymajorgrids = true,
+  grid style = dashed,
+  ]
+
+  \addplot[color = blue, mark = square]
+  coordinates{(10, 0.02118)(11, 0.04764)(12, 0.11615)(13, 0.27277)(14, 0.68783)(15, 1.45394)(16, 4.05375)(17, 12.30595)(18, 29.69340)
+  	(19, 73.94110)(20, 170.62250)};
+    
+  \addplot[color = red, mark = x]
+  coordinates{(10, 0.02064)(11, 0.04538)(12, 0.10083)(13, 0.21762)(14, 0.55693)(15, 1.52596)(16, 4.03057)(17, 11.566)(18, 31.07105)
+  	(19, 94.87275)(20, 224.77750)};
+
+  \addplot[color = green, mark = star]
+  coordinates{(10, 0.02273)(11, 0.04792)(12, 0.10017)(13, 0.27375)(14, 0.53642)(15, 1.53473)(16, 4.52265)(17, 11.83385)(18, 30.77380)
+  	(19, 80.61200)(20, 296.27150)};
+  \legend{Sequencial, OpenMP, C++ Threads}
+
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Tempos de execução para implementação senquencial e paralela com travas simples.}
+\label{exec:simples}
+\end{center}
+
+Contudo, a partir dos experimentos pode-se perceber que a localização foi a operação que consumiu maior tempo de processamento, como
+pode ser visto na Figura \ref{exec:parcelas} a qual mostra o consumo de tempo pelas operações de inserção (localização, construção da região de
+conflito e atualização).
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[ybar stacked,
+  xmin = 18, xmax = 20,
+  ymin = 0, ymax = 300,
+  xlabel = {$k$, em que $2^k$ pontos},
+  ylabel = {Tempo de execução (s)},
+  xtick = {18, 19, 20},
+  legend pos = outer north east,
+  ymajorgrids = true,
+  grid style = dashed,
+  enlargelimits=0.15,
+  ]
+
+  \addplot+[ybar]
+  coordinates{(18, 34.46305)(19, 69.64040)(20, 188.97050)};
+  \addplot+[ybar]
+  coordinates{(18, 2.93920)(19, 5.55268)(20, 11.65645)};
+  \addplot+[ybar]
+  coordinates{(18, 5.012505)(19, 8.02254)(20, 31.70463)};
+  \legend{Localização, Região de Conflito, Atualização}
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Parcelas de execução de cada etapa da inserção.}
+\label{exec:parcelas}
+\end{center}
+
+Diante disso, percebeu-se que a Trava Simples gerou maiores sincronizações, pois cada thread obtém acesso exclusivo para leitura
+das faces no instante de localização, sendo que um thread não poderia travar uma face cujos locks já estivessem em posse de outro thread.
+Caso isso ocorra, o algoritmo desistirá momentaneamente da inserção daquele ponto, a isso intitula-se de \textit{retreat}, e nova 
+tentativa será feita posteriormente. \\ 
+
+Logo, a partir dos dados mostrados pela Figura \ref{retreats:openmp} percebe-se um alto número de retreats ocorrendo na localização e baixo número
+para região de conflito. Contudo, a localização apenas utiliza-se de leituras dos vértices e faces, o que permite múltiplas leituras com segurança
+pelos threads, com exceção daqueles travados pela região de conflito. Além disso, deve-se ressaltar que como threads não poderão 
+modificar mesmas faces da triangulação, a construção da região de conflito também poderá ocasionar retreats.\\
+
+A partir disso, nota-se a necessidade do uso de Travas Melhoradas, que permitem menores sincronizações no processo de localização.
+Desse modo, a Figura \ref{retreats:openmp} mostra que esta estratégia permitiu uma conveniente redução no número de retreats pela localização.
+Ademais, quanto à região de conflito houve uma leve redução, mas não considerável. \\
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[
+  xlabel = {$k$, para $2^k$},
+  ylabel = {Número de Retreats},
+  xmin = 15, xmax = 20,
+  ymin = 0, ymax = 4000,
+  xtick = {},
+  ytick = {250, 500, 1000, 2000, 3000, 4000},
+  legend pos = outer north east,
+  ymajorgrids = true,
+  grid style = dashed,
+  ]
+  \addplot[color = blue, mark = triangle]
+  coordinates{(10, 1085)(11, 810)(12, 260)(13, 628)(14, 1099)(15, 1604)(16, 1190)(17, 1824)(18, 1730)(19, 3936)(20, 2368)};
+
+  \addplot[color = red, mark = x]
+  coordinates{(10, 177)(11, 424)(12, 264)(13, 156)(14, 606)(15, 423)(16, 487)(17, 248)(18, 470)(19, 222)(20, 124)};
+  \legend{Trava Simples, Trava Melhorada}
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Número de retreats na localização para execução paralela em OpenMP com 4 threads.}
+\label{retreats:openmp}
+\end{center}
+
+Apesar da redução no número de retreats, não houveram melhoras no tempo de execução dos algoritmos paralelos. Apenas a implementação
+usando C++ Threads apresentou pequena melhora, mas não chegando próximo de um speedup. Tais dados podem ser
+verificados nas Figuras \ref{exec:improved} e \ref{exec:travas}.
+
+\begin{center}
+\begin{tikzpicture}
+  \begin{axis}[
+  xlabel = {$k$, para $2^k$},
+  ylabel = {Tempo de execução (s)},
+  xmin = 15, xmax = 20,
+  ymin = 0, ymax = 300,
+  xtick = {},
+  ytick = {0, 50, 100, 150, 200, 250, 300},
+  legend pos = outer north east,
+  ymajorgrids = true,
+  grid style = dashed,
+  ]
+
+  \addplot[color = blue, mark = square]
+  coordinates{(10, 0.02118)(11, 0.04764)(12, 0.11615)(13, 0.27277)(14, 0.68783)(15, 1.45394)(16, 4.05375)(17, 12.30595)(18, 29.69340)
+  	(19, 73.94110)(20, 170.62250)};
+  \addplot[color = red, mark = x]
+  coordinates{(10, 0.01982)(11, 0.04514)(12, 0.10338)(13, 0.24688)(14, 0.65469)(15, 1.81986)(16, 4.86161)
+  	(17, 11.13360)(18, 44.55410)(19, 87.34675)(20, 240.88950)};
+  \addplot[color = green, mark = star]
+  coordinates{(10, 0.02228)(11, 0.04722)(12, 0.09558)(13, 0.26587)(14, 0.53982)(15, 1.52206)(16, 4.42327)(17, 11.69265)
+  	(18, 30.84685)(19, 79.68945)(20, 267.64950)};
+  \legend{Sequencial, OpenMP, C++ Threads}
+  \end{axis}
+
+
+\end{tikzpicture}
+\captionof{figure}{Tempo de execução dos algoritmos sequencial e paralelos com travas melhoradas e 4 threads.}
+\label{exec:improved}
+\end{center}
+
+\begin{center}
+\begin{tabular}{rl}
+\begin{tikzpicture}[scale=0.8]
+  \begin{axis}[
+  title = OpenMP,
+  xlabel = {$k$, para $2^k$},
+  ylabel = {Tempo de execução (s)},
+  xmin = 15, xmax = 20,
+  ymin = 0, ymax = 300,
+  xtick = {},
+  ytick = {0, 50, 100, 150, 200, 250, 300},
+  legend pos = north west,
+  ymajorgrids = true,
+  grid style = dashed,]
+  \addplot[color = blue, mark = triangle]
+  coordinates{(10, 0.02064)(11, 0.04538)(12, 0.10083)(13, 0.21762)(14, 0.55693)(15, 1.52596)(16, 4.03057)(17, 11.566)(18, 31.07105)
+  	(19, 94.87275)(20, 224.77750)};
+  \addplot[color = red, mark = square*]
+  coordinates{(10, 0.01982)(11, 0.04514)(12, 0.10338)(13, 0.24688)(14, 0.65469)(15, 1.81986)(16, 4.86161)
+  	(17, 11.13360)(18, 44.55410)(19, 87.34675)(20, 240.88950)};
+  \legend{Trava Simples, Trava Melhorada}
+  \end{axis}
+\end{tikzpicture}
+
+&
+
+\begin{tikzpicture}[scale=0.8]
+  \begin{axis}[
+  title = C++ Threads,
+  xlabel = {$k$, para $2^k$},
+  ylabel = {Tempo de execução (s)},
+  xmin = 15, xmax = 20,
+  ymin = 0, ymax = 300,
+  xtick = {},
+  ytick = {0, 50, 100, 150, 200, 250, 300},
+  legend pos = north west,
+  ymajorgrids = true,
+  grid style = dashed,]
+  \addplot[color = blue, mark = triangle]
+  coordinates{(10, 0.02273)(11, 0.04792)(12, 0.10017)(13, 0.27375)(14, 0.53642)(15, 1.53473)(16, 4.52265)(17, 11.83385)(18, 30.77380)
+  	(19, 80.61200)(20, 296.27150)};
+  \addplot[color = red, mark = square*]
+  coordinates{(10, 0.02228)(11, 0.04722)(12, 0.09558)(13, 0.26587)(14, 0.53982)(15, 1.52206)(16, 4.42327)(17, 11.69265)
+  	(18, 30.84685)(19, 79.68945)(20, 267.64950)};
+  \legend{Trava Simples, Trava Melhorada}
+  \end{axis}
+\end{tikzpicture}
+
+\end{tabular}
+\captionof{figure}{Comparação dos tempos de execução de Travas Simples e Melhoradas. \\}
+\label{exec:travas}
+\end{center}
+
+Nesse sentido, embora melhora no número de retreats, não houve significativa redução no tempo de execução dos algoritmos. Assim, 
+o maior consumo de tempo continua sendo pela localização de pontos. \\
+
+\section*{Conclusão}
+Ainda que seja uma ferramenta muito útil para ganhos em desempenho computacional, a Computação Paralela necessita diversos estudos 
+e elaborações de estratégias para se obter os melhores resultados. Desse modo, aplicando-a em contruções de triangulações de Delaunay
+tem sido tema recorrente de estudo atualmante, havendo ainda resultados positivos. Entretanto, apesar das estratégias de sincronização
+terem performance considerável no gerenciamento de sincronizações, dificuldades na obtenção de tempos de execução foram enfrentadas. \\
+
+Portanto, haja vista os resultados produzidos por esse trabalho, nota-se a necessidade de uma análisa mais ampla das possívies causas
+de lentidão geradas nos algoritmos paralelos. Logo, pode-se considerar para o futuro a verifição dos possíveis causadores de menor 
+desempenho na localização de pontos como também o estudo estratégias de travas adequadas ao método de inserção com o intuito de obteção 
+de speedups. \\
+
+
+%\newpage
+\bibliographystyle{unsrt}
+\bibliography{references}
+\end{document}
