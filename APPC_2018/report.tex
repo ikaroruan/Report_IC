@@ -1,0 +1,172 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{amsmath, amssymb}
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+
+\declaretheorem[style=definition, name=Definição]{definicao}
+
+\hyphenation{com-ple-xi-da-de}
+\hyphenation{ca-mi-nho}
+
+\title{Relatório Final de Projeto}
+\author{Plácido Francisco de Assis Andrade\\ 
+	\texttt{placido.andrade@ufca.edu.br} 
+	\and 
+	Ikaro Ruan Penha Costa \\
+	\texttt{ikaroruan@outlook.com}
+	}
+\date{}
+
+\begin{document}
+\maketitle
+
+
+\section*{Identificação de Projeto}
+\textbf{Título} \\
+Análise Quantitativa de PPC's \\
+
+\noindent \textbf{Edital de Referência} \\
+PIBIC Edital XXXXXX \\
+
+\section*{Área do Conhecimento Predominante}
+Ciência da Computação
+
+\onehalfspace
+\section*{Resumo}
+
+É certo que as Diretrizes Curriculares Nacionais regem os conteúdos que constituem os PPC's das Instituições de Ensino Superior do Brasil. Sendo assim, não 
+é viável uma análise da pertinência de conteúdos de um curso de ensino superior, mas é possível proceder-se com um estudo do quão extenso ou profundo é a 
+estrutura de um PPC. Logo, dois índices são propostos, os quais quantificam a complexidade e a possível retenção de alunos provenientes dos pré-requisitos da 
+matriz curricular de um curso. Ainda, alguns parâmetros para construção dos índices são calculados e podem ser usados para a análise quantitativa do PPC, os quais 
+foram indicados como sub-índices. Foi desenvolvido um aplicativo computacional de distribuição gratuita intitulado AnálisePPC como suporte para realização de 
+simulações e comparação de matrizes curriculares semelhantes. Portanto, este projeto possibilitar tais índices com problemas acadêmicos enfrentados em diversos 
+cursos, como evasão, abandono, repetência ou tracamento e simular possíveis simulações para diminuição da complexidade e retenção causada por pré-requisitos. \\
+
+\textbf{Palavras-chave:} Estrutura curricular. Análise quantitativa. PPC. IES. AnálisePPC.
+
+\section*{Introdução}
+
+No processo de criação de um Projeto Político de Curso (PPC) a atenção prioritária é posta nos conteúdos a serem integralizados, sendo os maiores parâmetros 
+observados as Diretrizes Curriculares Nacionais estabelecidas pelo Conselho Nacional de Educação (CNE) do Ministério da Educação. Esta é uma postura natual e 
+não cabe, assim, observar a conveniência dos conteúdos propostos, mas torna-se interessante a análise quantitativa de fatores como a extensão do curso, a 
+profundidade e a quantidade de cominhos de pré-requisitos da estrutura curricular, as cargas horárias complementares e de estágio obrigatório. \\
+
+Para tal análise são propostos parâmetros, sub-índices, para a construção do dois índices propostos neste trabalho: Índice de Retenção e Índice de Complexidade. 
+Tomando-se um turno de um estudante com carga horária diária de oito horas, sendo quatro horas despendidas em aulas teóricas e práticas e outras quatro em 
+estudo individual, pode-se compor o sub-índice dos Turnos Efetivos como a quantidade de turnos exigidos por semestre em um PPC. A ideia principal do 
+sub-índice do Peso dos Pré-requisitos considera a extensão dos caminhos de pré-requisitos e se estes estão em semestres consecutivos, visto que quanto mais 
+longo um caminho e mais concentrado em semestre consecutivos, maior é o seu peso visando a integralização do curso. Ainda, quantificando a recorrência de um 
+pré-requisito e diferentes caminhos, pode-se formar os Pré-requisitos Acumulados. Ao se unir tais parâmetos, pode-se construir o Índice de Complexidade, 
+o qual considera os três parâmetros anteriores, e o Índice de Retenção que contempla a disposição das disciplinas ao longo dos semestres. \\
+
+Como ferramenta para o cálculo de tais índices foi desenvolvido um programa computacional intitulado AnálisePPC. O seu algoritmo interpreta o PPC como 
+um Grafo Acíclico Direcionado (\textit{DAG}, sigla em inglês), em que cada vértice é tido como uma disciplina e cada aresta indica a necessidade de integralizar 
+uma disciplina para se poder cursar a disciplina subsequente. Dessa forma, pode-se percorrer o grafo em busca dos caminhos de pré-requisitos possíveis e, então, 
+calcular os índices propostos. \\
+
+Portanto, o programa AnálisePPC pode servir como uma útil ferramenta para os conselhos de cursos e de criação de PPC's das Instituições de Ensino Superior 
+do Brasil. Possibilitando simulações por diversas alterações na estrutura curricular de curso de ensino superior, o AnálisePPC embasa as mudanças em complexidade e 
+retenção do curso, afetando diretamente o discente, em decorrência da criação ou modificação de PPC's. Sendo assim, este projeto pode servir para 
+busca de melhorias quanto aos problemas de evasão, repetência, abandono ou trancamento.
+
+\section*{Justificativa}
+
+Os autores do trabalho não têm ciência quanto a análises semelhantes da estrutura curricular de um PPC ou quanto ao programa em trabalhos 
+prévios. Logo, a sua execução justifica-se por possibilitar além da análise quantitativa como ferramenta para criação e modificação de PPC's, 
+mas também pode-se atribuir uma linha de pesquisa relacionada à ensino-aprendizagem na educação superior brasileira.
+
+\section*{Referencial Teórico}
+Como mencionado anteriormente, os autores não tem conhecimento de um trabalho anterior com análise semelhante de um PPC. Assim, os índices a serem apresentados 
+a seguir foram propostos e refinados refinados pelos autores até a sua consolidação. \\ 
+
+Por sua essencialidade na construção dos índices, os sub-índices Turnos Efetivos, Peso dos Pré-requitos e Pré-requisitos Acumulados terão sua formulação 
+matemática apresentada. Em seguida, os Índices de Complexidade e Retenção serão definidos.
+
+\subsection*{Turnos Efetivos ($\mathcal{T}_{ppc}$)}
+Toma-se por aluno padrão aquele referente a interpretação de um estudante como um profissinal engajado em numa carga horária de 8 horas por dia, sendo 
+4 horas despendidas em aulas teróricas e práticas e 4 horas de estudo individual. Considera-se, ainda, que o aluno padrão tem carga horária semestral de 
+$T_0 = 320h$ de aulas teóricas e práticas distribuídas em 100 dias letivos. \\ 
+
+Para a definição do Turno Efetivo serão utilizadas as gradezas apresentadas a seguir: \\
+
+\begin{enumerate}
+\item $n$: número de semestres propostos para integralização.
+\item $M_{ppc}$: carga horária de integralização do PPC.
+\item $M_{ac}$: carga horária de integralização das atividades complementares.
+\item $M_{est}$: carga horária de estágio supervisionado.
+\item $s_i$: semestre letivo $i$.
+\item $M_i$: soma das cargas horárias das disciplinas alocadas no semestre $s_i$.
+\end{enumerate}
+
+\begin{definicao}
+A quantidade de turno efetivo do semestre $s_i$ de um PPC com uma proposta de $n$ semestres  de integralização é \\
+
+$$\tau_i = 2\frac{M_i}{T_0} + \frac{\frac{M_{ac}+M_{est}}{n}}{T_0}$$
+\end{definicao}
+
+\begin{definicao}
+A quantidade de turnos efetivos do PPC com $n$ semestres letivos de integralização é \\
+$$\mathcal{T}_{ppc} = \sum_{i = 1}^{n} \tau_i$$
+\end{definicao}
+
+\subsection*{Peso dos Pré-requisitos ($\mathcal{P}_{ppc}$)}
+
+Inicialmente, deve-se conceituar um caminho de pré-requisitos. Dá-se à sequência $\alpha = \{ (m_i, s_i) \}_{i=1}^k$ a designação de um caminho de 
+pré-requisitos sendo $m_i$ a carga horária e $s_i$ o semestre proposto da disciplina $d_i$. Atenta-se, pois, que a disciplina $(m_i, s_i)$ é um pré-requisito 
+para $(m_{i+1}, s_{i+1})$. \\ 
+
+O julgamento da dificuldade de uma disciplina é um processo subjetivo, não cabendo aqui a sua utilização. Logo, não é justo afirmar que uma disciplina de 
+maior carga horária é de maior complexidade. Por outro lado, é possível assumir que uma disciplina alocada em um semestre mais avançado terá maior peso no 
+tempo integralização previsto, haja vista que a perda de tal disciplina por algum motivo acarreta em menor tempo para recuperação do atraso causado.
+Sendo assim, atribui-se o maior peso de um caminho $\alpha$ o valor do semestre $s_k$. \\
+
+Ainda considerando o tempo necessário para recuperação do atraso causado pela perda de uma disciplina, considera-se que disciplinas consecutivas tenha o 
+mesmo peso, pois a perda de uma delas resulta em uma reação em cadeia incrementando o valor dos seus semestres. Atribui-se, então, que todas as disciplinas 
+consecutivas tem peso igual ao maior valor de semestre entre elas. \\
+
+Isto significa que para duas disciplinas $(m_i, s_i)$ e $(m_j, s_j)$ presentes em um caminho $\alpha$, se $s_i - s_j = i - j$ então as duas disciplinas 
+terão peso equivalentes de valor igual a $\max{\{ s_i, s_j \}}$. \\
+
+Seja $\mathcal{S}_\alpha = {s_1, s_2, \ldots, s_k}$ o conjunto constituído pelos semestres do caminho $\alpha$. Define-se a relação de equivalência em 
+$\mathcal{S}_\alpha$, 
+
+$$ s_i \equiv s_j \qquad \text{se, e somente se, } \qquad s_i - s_j = i - j. $$
+
+Para a definição do Peso dos Pré-requisitos, toma-se $Q_\alpha = \{ Q_{i_1}, Q_{i_2}, \ldots, Q_{i_p} \}$ de modo que $i_1 < i_2 < \cdots < i_p$ como 
+o conjunto das classes de equivalências de $\mathcal{S}_\alpha$ e $s_{i_j} = \max Q_{i_j}$ para todo $j$ tal que $1 \leq j \leq p$. \\
+
+Com efeito, sendo $\#Q_{i_j}$ a cardinalidade do conjunto $Q_{i_j}$ e $\log{x}$ o logaritmo na base 10, verifica-se
+
+\begin{definicao}
+Seja $\alpha$ um caminho de pré-requisitos, o Peso dos Pré-requisitos das disciplinas do caminho $\alpha$ é
+$$ \mathcal{P}_\alpha = \sum_{j=1}^p (\#Q_{i_j}\log{s_{i_j}}) $$
+\end{definicao}
+
+
+\subsection*{Pré-requisitos Acumulados $(\mathcal{R}_{ppc})$}
+Um mesmo pré-requisito pode aparecer diversas caminhos de pré-requisitos diferentes, em que isso é causado pelas bifurcações causadas 
+por disciplinas que são pré-requisitos para mais de uma disciplina posterior. Isto indica que as disciplinas antes das bifurcações são essenciais 
+para a integralização do curso no tempo proposto no PPC. \\
+
+Procurando-se contabilizar a importância de tais disciplinas presentes em diversos caminhos, conta-se a quantidade de pré-requisitos em cada 
+caminho do PPC. Sendo $\alpha$ um caminho de pré-requisitos, $||\alpha||$ é número de disciplinas do caminho. Seja $\Gamma$ o conjunto de todos 
+os caminhos do PPC, define-se:
+
+\begin{definicao}
+O número de pré-requisitos presentes no caminho $\alpha$, denotado por $\mathcal{R}_\alpha$, é
+
+$$ \mathcal{R}_\alpha = ||\alpha|| - 1 $$
+\end{definicao}
+
+\begin{definicao}
+O número de pré-requisitos acumulados presentes no PPC é
+$$ \mathcal{R}_{ppc} = \sum_{\alpha \in \Gamma} \mathcal{R}_\alpha $$
+\end{definicao}
+
+\section*{Índice de Complexidade}
+
+\end{document}
