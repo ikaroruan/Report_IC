@@ -167,6 +167,70 @@ O número de pré-requisitos acumulados presentes no PPC é
 $$ \mathcal{R}_{ppc} = \sum_{\alpha \in \Gamma} \mathcal{R}_\alpha $$
 \end{definicao}
 
-\section*{Índice de Complexidade}
+\section*{Índice de Complexidade ($\Delta_{ppc}$)}
+Pode-se considerar que a quantidade de horas requeridas de estudo por um curso de ensino superior, a composição das disciplinas e seus pré-requisitos, assim 
+como a influência que exercem os pré-requisitos na integralização proposto na grade curricular são fatores que contribuem para maior ou menor complexidade 
+de um PPC. Sendo assim, define-se: 
+
+\begin{definicao}
+O índice de complexidade de um PPC, denotado por $\Delta_{ppc}$, é a soma de turnos efetivos, peso dos pré-requisitos e pré-requisitos acumulados, ou seja,
+
+$$\Delta_{ppc} = \mathcal{T}_{ppc} + \mathcal{P}_{ppc} + \mathcal{R}_{ppc}$$
+\end{definicao}
+
+\section*{Índice de Retenção ($\gamma_{ppc}$)}
+
+Cabe à administração do curso a programação semestral das disciplinas do curso, assim como a disposição de cada disciplina na grade de horário semanal. O 
+Índice de Complexidade não considera questões como reprovação, oferta de disciplina e tempo de conclusão. Duas hipóteses sobre a administração do curso 
+são feitas visando modelar tais questões.
+
+\begin{enumerate}
+\item As disciplinas são ofertadas anualmente com semestralidades indicadas no PPC.
+\item O aluno terá sucesso ao cursar pela segunda vez uma disciplina. 
+\end{enumerate}
+
+Suponha $d$ uma disciplina a qual um aluno, por algum motivo, não realizou sua matrícula ou foi reprovado. Sendo as disciplinas do curso de oferta anual, 
+$d$ será deslocada dois semestres a frente. Ademais, considerando os caminhos de pré-requisitos $\beta$ que contém $d$, todas as disciplinas a frente de 
+$d$ em $\beta$ também serão deslocadas em dois semestres. Logo, o caminho de pré-requisitos retificado seria na forma:
+
+$$ \beta_{ret}: (m_1, s_1 + 2) \rightarrow (m_2, s_2 + 2) \rightarrow \cdots \rightarrow (m_k, m_k +2) $$
+
+Seja $\Gamma(d)$ o conjunto constituído por os todos os sub-caminhos com início em $d$. Como definido anteriormente, $\mathcal{S}_\beta$ e 
+$\mathcal{S}_{\beta_{ret}}$ são os conjuntos dos semestres, assim como $Q_\beta$ e $Q_{\beta_{ret}}$ as respectivas classes de 
+equivalência. Observa-se que $Q_{\beta_{ret}}$ é obtido somando-se 2 a cada elemento de $Q_\beta$.
+
+\begin{definicao}
+O Índice de Retenção de uma disciplina $d$ em relação a um sub-caminho $\beta \in \Gamma(d)$ é
+
+$$ \gamma_{\beta} = \sum_{j = 1}^{p}(\#Q_{k_j} \log(s_{k_j}+2)) $$
+\end{definicao}
+
+\begin{definicao}
+O Índice de Retenção de uma disciplina é
+
+$$ \gamma_d = \sum_{\beta \in \Gamma(d)} \gamma_\beta $$
+\end{definicao}
+
+\begin{definicao}
+O Índice de Retenção de um PPC é
+
+$$ \gamma_{ppc} = \sum_{d} \gamma_d $$
+onde o somatório percorre todas as disciplinas do PPC.
+\end{definicao}
+
+\section*{Objetivos}
+
+O objetivo geral consiste do desenvolvimento de um software para a análise quantitativa de PPC's. Especificamente, pode-se ressaltar: 
+
+\begin{enumerate}
+\item Iniciar um estudante na construção de um aplicativo. (T)
+\item Criar um aplicativo que seja útil aos gestores que lidam com o aspecto ensino-aprendizagem na UFCA. (T)
+\item Fazer comparações entre PPC's dos cursos da UFCA com de outras instituições de ensino superior. (T)
+\item Elaborar linhas de estudo sobre ensino-aprendizagem utilizando possíveis refinamentos da análise estabelecida inicialmente. (P)
+\end{enumerate}
+
+\begin{enumerate}
+
+\end{enumerate}
 
 \end{document}
