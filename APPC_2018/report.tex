@@ -4,8 +4,11 @@
 \usepackage{amsmath, amssymb}
 \usepackage{amsthm}
 \usepackage{thmtools}
+\usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
+
+\graphicspath{{./images/}}
 
 \declaretheorem[style=definition, name=Definição]{definicao}
 
@@ -229,8 +232,30 @@ O objetivo geral consiste do desenvolvimento de um software para a análise quan
 \item Elaborar linhas de estudo sobre ensino-aprendizagem utilizando possíveis refinamentos da análise estabelecida inicialmente. (P)
 \end{enumerate}
 
-\begin{enumerate}
+\section*{Metodologia}
 
-\end{enumerate}
+Para armazenar o PPC e auxiliar o cálculo dos índices, foi utilizada uma estrutura de dados na forma de um Grafo. Seja $G = (V, E)$ um conjunto, consistindo 
+de um conjunto finito de vértices $V$ e um conjunto finito de arestas $E$. Quando $E$ é composto por pares ordenados $(u, v)$ sendo $u$ e $v \in V$ o grafo é 
+chamado de \textit{direcionado}, logo $(u, v) \neq (v, u)$. \\
+
+Define-se por caminho em um grafo $G$ como uma sequência de vértices $\alpha = \{ v_1, v_2, \dots, v_k \}$ tal que $(v_i, v_{i+1}) \in E$ para $i = 1, 2, \dots, k$.
+Essa definição assemelha-se a de um caminho de pré-requisitos, sendo $d_i$ a disciplina de um PPC vista como um vértice do grafo $G$. Com efeito, sejam $d_1$ e 
+$d_2$ disciplinas de um PPC, o par ordernado $(d_1, d_2)$ é uma aresta de $E$ com $d_1$, $d_2 \in V$, significando que a disciplina $d_1$ é um pré-requisito 
+para $d_2$. \\
+
+Ainda, os caminhos de um PPC são acíclicos, visto que disciplinas de semestres mais avançados não serão pré-requisitos para disciplinas de semestres 
+anteriores. Ou seja, para qualquer caminho $\alpha$ de $G$ com $k$ vértices, este terá $k-1$ arestas, visto que sendo $d_i=(m_i, s_i)$ é pré-requisito para 
+$d_j=(m_j, s_j)$, então $s_i > s_j$. Logo, o PPC toma a forma de Grafo Acíclico Direcionado (\textit{DAG}, do inglês Directed Acyclic Graph). \\
+
+A forma computacional para armazenamento do grafo é a de lista de adjacências. Um arranjo principal tem como elementos informações que apontam para uma 
+lista encadeada, a qual cada nó compõe um vértice e vértices adjacentes compõem as arestas do grafo. A Figura \ref{img:adjacencies_list} apresenta um 
+esquema da lista de adjacências. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{adjcencies_list.pdf}
+\caption{Esquema representativo de uma lista de adjacências.}
+\label{img:adjacencies_list}
+\end{figure}
 
 \end{document}
