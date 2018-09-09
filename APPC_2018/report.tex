@@ -4,11 +4,18 @@
 \usepackage{amsmath, amssymb}
 \usepackage{amsthm}
 \usepackage{thmtools}
+\usepackage{hyperref}
+\usepackage[portuguese, ruled, noend]{algorithm2e}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
 
+\geometry{a4paper, margin=2.4cm}
+
 \graphicspath{{./images/}}
+
+\SetKwFor{Para}{para}{faça}{fim para}
+\SetKwBlock{Inicio}{In\'{i}cio}{fim}
 
 \declaretheorem[style=definition, name=Definição]{definicao}
 
@@ -234,6 +241,8 @@ O objetivo geral consiste do desenvolvimento de um software para a análise quan
 
 \section*{Metodologia}
 
+\subsection*{Algoritmo}
+
 Para armazenar o PPC e auxiliar o cálculo dos índices, foi utilizada uma estrutura de dados na forma de um Grafo. Seja $G = (V, E)$ um conjunto, consistindo 
 de um conjunto finito de vértices $V$ e um conjunto finito de arestas $E$. Quando $E$ é composto por pares ordenados $(u, v)$ sendo $u$ e $v \in V$ o grafo é 
 chamado de \textit{direcionado}, logo $(u, v) \neq (v, u)$. \\
@@ -249,7 +258,7 @@ $d_j=(m_j, s_j)$, então $s_i > s_j$. Logo, o PPC toma a forma de Grafo Acíclic
 
 A forma computacional para armazenamento do grafo é a de lista de adjacências. Um arranjo principal tem como elementos informações que apontam para uma 
 lista encadeada, a qual cada nó compõe um vértice e vértices adjacentes compõem as arestas do grafo. A Figura \ref{img:adjacencies_list} apresenta um 
-esquema da lista de adjacências. 
+esquema da lista de adjacências. \\
 
 \begin{figure}[h]
 \centering
@@ -257,5 +266,116 @@ esquema da lista de adjacências.
 \caption{Esquema representativo de uma lista de adjacências.}
 \label{img:adjacencies_list}
 \end{figure}
+
+Definindo um vértice raiz $d_R$ como sendo aquele que não possui pré-requisitos, ou seja, $d_R = (m_0, s_0)$ quando pertencente a um caminho $\alpha \in \Gamma$. Ainda, 
+defini-se como vértice extremidade $d_E$ quando este não for pré-requisito para nenhuma outra disciplina do PPC, ou seja, $d_E = (m_k, s_k)$ para qualquer caminho 
+$\alpha \in \Gamma$ de tamanho $k$, e uma bifurcação como um vértice que é pré-requisito para mais de uma disciplina. \\
+
+Para a busca de todos caminhos possíveis em um grafo $G = (E, V)$, inicia-se com um vértice raiz e caminha-se em direção a outros vértices respeitando a relação de 
+pré-requisitos entre as disciplinas até que um vértice extremidade seja atingido, então, se houve uma bifurcação $d_B$ no caminho formado, retorna-se a $d_B$ e 
+procede-se da mesma maneira até atingir outro vértice extremidade, caso não haja 
+birfurcação, o caminho já foi formado. Deve-se repetir o processo até que todos 
+os vértices raiz tenham seus caminhos encontrados. O algoritmo é formalizado como a seguir. \\
+
+\begin{algorithm}[H]
+\small
+\SetAlgoNoLine
+\Entrada{Grafo $G=(E,V)$ com $V$ conjunto de vértices e $E$ conjunto de arestas.}
+\Saida{Conjunto $\Gamma$ com os caminhos de $G$.}
+\Inicio{
+	Pilha $p$ com vértices raiz de $V$ \\
+	\Enqto{$p$ não é vazia}{
+		$d$ = frente de $p$ \\
+		remova a frente de $p$ \\
+		percorra as adjacências a partir de $p$ até uma extremidade \\
+		adicione todos os vértices encontrado ao caminho $\alpha$ \\
+		adicione $\alpha$ em $\Gamma$\\
+	}
+}
+\Retorna{$\Gamma$}
+\caption{DFS para caminhos de pré-requisitos.}
+\end{algorithm}
+
+Sob posse de todos os caminhos formados pelo PPC, pode-se calcular todos parâmetros necessários ao cálculo dos sub-índices, como as classes de equivalências do Peso 
+dos Pré-requisitos. Logo, pode-se ter o resultado dos índices para o PPC. \\
+
+Além disso, foram calculados os valores dos índices para cada semestre proposto para integralização com o intuito da construção de gráfico. Para tal, toma-se um 
+semestre $s_i > 0$ e calcula-se os valores do Índice de Retenção e do Índice de Complexidade não levando em conta os semestres $s_j < s_i$, considerando que os 
+semestres anteriores já foram integralizados.
+
+\subsection*{Desenvolvimento}
+
+Para o desenvolvimento do \textit{software} foi utilizada a linguagem Python 3 e a biblioteca nativa para salva e gerenciar o PPC em XML. Foi desenvolvida uma 
+GUI (\textit{Guided User Interface}) através do PyQt 4 e Matplotlib para apresentação dos gráficos. \\ 
+
+O aplicativo AnálisePPC foi desenvolvido em plataforma Linux. Executáveis foram gerados a partir do PyInstaller 3.3 tanto para Windows como para Fedora e estão publicados em 
+\url{analiseppc.github.io}. A janela principal é apresentada na Figura \ref{img:main-window}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.45]{main-window}
+\caption{Janela principal do aplicativo AnálisePPC.}
+\label{img:main-window}
+\end{figure}
+
+Para adicionar disciplinas, os dados necessários são requisitados a partir da janela como mostrada na Figura \ref{img:course-window}. Vale ressaltar que as 
+disciplinas são organizadas por seus códigos. Logo, para inserir os pré-requisitos, deve-se inserir os códigos das disciplinas separadas por espaço simples. \\
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{course-window}
+\caption{Janela para inserção dos dados da disciplina.}
+\label{img:course-window}
+\end{figure}
+
+Como visto na Figura \ref{img:main-window}, é possível inserir e calcular dois PPC's simultâneos. Portanto, essa funcionalidade possibilita comparar diferentes 
+documentos ou realizar simulações a partir de alterações de um mesmo PPC. Frizando que a opção de comparação mostra os resultados para os dois arquivos em 
+uma mesm janela. \\
+
+\section*{Resultados e Discussão}
+
+Inicialmente, optou-se por realizar simulações com os PPC's dos cursos da UFCA. Para tal, foram aproveitados aqueles que sofreram reformulações no ano de 2018. 
+Logo, serão analisados os PPC's dos cursos de Engenharia Civil e Administração 
+Pública e Gestão Social. \\
+
+Para o curso de Engenharia Civil foram analisados os ducumentos de 2008 e 2018. Os dois possuem mesmo número de semestres proposto para integralização. Contudo, 
+o mais recente possui mair carga horária de integralização e menor valore requerido para carga horária complementar. A Figura \ref{img:civil-window} demonstra a visualização de resultados no AnálisePPC. Em seguida, temos expressos os valores 
+para os índices de cada PPC. \\
+
+\begin{figure}[htb!]
+\centering
+\includegraphics[scale=0.45]{civil-window}
+\caption{Visualização dos resultados com o software AnálisePPC.}
+\label{img:civil-window}
+\end{figure}
+
+Contudo, apesar do aumento na integralização e no número de disciplinas, o PPC de 2018 possui menores valores para o Índice de Retenção e o Índice de 
+Complexidade. Isto se deve ao fato do grade curricular mais recente ter menor número de bifurcações, incorrendo em menor número de caminhos. Pode-se, ainda, 
+ressaltar que o PPC de 2008 possui uma quantidade considerável de disciplinas que são pré-requisitos para mais de duas disciplinas. Tal ramificação toma 
+forma tanto na complexidade quanto na retenção da estrutura curricular do curso. \\
+
+\begin{center}
+\begin{table}
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{3}{|c|}{Engenharia Civil} \\ 
+\hline\hline
+	& PPC 2008 & PPC 2018 \\
+\hline
+Turnos Efetivos ($\mathcal{T}_{ppc}$) & 31,10 & 32,55 \\
+\hline
+Peso dos Pré-requisitos ($\mathcal{P}_{ppc}$) & 501,57 & 234,93 \\
+\hline
+Pré-requisitos Acumulados ($\mathcal{R}_{ppc}$) & 523 & 256 \\
+\hline
+Índice de Complexidade ($\Delta_{ppc}$) & 1055,00 & 522,00 \\
+\hline
+Índice de Retenção ($\gamma_{ppc}$) & 577,21 & 279,45 \\ 
+\hline
+\end{tabular}
+\caption{Resultados obtidos dos sub-índices e índices para o curso de Engenharia Civil}
+\end{table}
+\end{center}
 
 \end{document}
