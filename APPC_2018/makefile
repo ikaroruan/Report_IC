@@ -1,6 +1,8 @@
-report.pdf: report.tex
-	pdflatex report.tex
-	pdflatex report.tex
+report.pdf: report.tex references.bib
+	pdflatex report
+	bibtex report
+	pdflatex report
+	pdflatex report
 
 clean:
 	@rm report.aux

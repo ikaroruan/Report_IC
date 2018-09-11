@@ -6,6 +6,9 @@
 \usepackage{thmtools}
 \usepackage{hyperref}
 \usepackage[portuguese, ruled, noend]{algorithm2e}
+\usepackage{pgfplots}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
@@ -243,7 +246,7 @@ O objetivo geral consiste do desenvolvimento de um software para a análise quan
 
 \subsection*{Algoritmo}
 
-Para armazenar o PPC e auxiliar o cálculo dos índices, foi utilizada uma estrutura de dados na forma de um Grafo. Seja $G = (V, E)$ um conjunto, consistindo 
+Para armazenar o PPC e auxiliar o cálculo dos índices, foi utilizada uma estrutura de dados na forma de um Grafo. Em concordância com \cite{book_cormen} e \cite{book_sedgewick}, seja $G = (V, E)$ um conjunto, consistindo 
 de um conjunto finito de vértices $V$ e um conjunto finito de arestas $E$. Quando $E$ é composto por pares ordenados $(u, v)$ sendo $u$ e $v \in V$ o grafo é 
 chamado de \textit{direcionado}, logo $(u, v) \neq (v, u)$. \\
 
@@ -349,10 +352,12 @@ para os índices de cada PPC. \\
 \label{img:civil-window}
 \end{figure}
 
-Contudo, apesar do aumento na integralização e no número de disciplinas, o PPC de 2018 possui menores valores para o Índice de Retenção e o Índice de 
+Contudo, apesar do aumento na integralização e no número de disciplinas, o PPC de 2018 \cite{eng-civil2018} possui menores valores para o Índice de Retenção e o Índice de 
 Complexidade. Isto se deve ao fato do grade curricular mais recente ter menor número de bifurcações, incorrendo em menor número de caminhos. Pode-se, ainda, 
-ressaltar que o PPC de 2008 possui uma quantidade considerável de disciplinas que são pré-requisitos para mais de duas disciplinas. Tal ramificação toma 
-forma tanto na complexidade quanto na retenção da estrutura curricular do curso. \\
+ressaltar que o PPC de 2008 \cite{eng-civil2008} possui uma quantidade considerável de disciplinas que são pré-requisitos para mais de duas disciplinas. Tal ramificação toma 
+forma tanto na complexidade quanto na retenção da estrutura curricular do curso. 
+
+\vfill
 
 \begin{center}
 \begin{table}
@@ -377,5 +382,154 @@ Pré-requisitos Acumulados ($\mathcal{R}_{ppc}$) & 523 & 256 \\
 \caption{Resultados obtidos dos sub-índices e índices para o curso de Engenharia Civil}
 \end{table}
 \end{center}
+
+\begin{figure}[htb!]
+	\centering
+	\begin{minipage}[hb]{0.45\textwidth}
+	\begin{tikzpicture}[scale=0.8]
+		\begin{axis}[
+			xlabel={Semestre},
+			ylabel={Índice de Retenção},
+			xtick={1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			legend pos = north east,
+		]
+		\addplot[color=blue, mark=square,]
+			coordinates{(1, 577.2149)(2, 517.3670)(3, 455.4280)(4, 388.4659)(5, 319.0128)
+				    (6, 262.7727)(7, 217.8957)(8, 139.4786)(9, 69.4666)(10, 33.4546)};
+		
+		\addplot[color=red, mark=triangle,]
+			coordinates{(1, 279.4523)(2, 244.0756)(3, 209.1970)(4, 175.3465)(5, 143.8290)
+				    (6, 110.3645)(7, 80.5395)(8, 54.4001)(9, 22.9862)(10, 1.0792)};
+		\legend{PPC 2008, PPC 2018}
+		\end{axis}
+	\end{tikzpicture}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[hb]{0.45\textwidth}
+	\begin{tikzpicture}[scale=0.8]
+		\begin{axis}[
+			xlabel={Semestre},
+			ylabel={Índice de Complexidade},
+			xtick={1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			legend pos = north east,
+		]
+		\addplot[color=blue, mark=square,]
+			coordinates{(1, 1055.6718)(2, 935.5068)(3, 809.7551)(4, 674.3770)(5, 534.6973)
+				    (6, 422.3564)(7, 338.9731)(8, 200.4778)(9, 84.3564)(10, 32.94)};
+		
+		\addplot[color=red, mark=triangle,]
+			coordinates{(1, 523.4818)(2, 450.9207)(3, 378.1719)(4, 306.3242)(5, 243.2775)
+				    (6, 174.9892)(7, 119.4161)(8, 69.2772)(9, 27.2749)(10, 2.695)};
+		\legend{PPC 2008, PPC 2018}
+		\end{axis}
+	\end{tikzpicture}
+	\end{minipage}
+\caption{Resultado comparativo dos índices por semestre para o curso de Engenharia Civil.}
+\end{figure}
+
+Quanto ao PPC do curso de Administração Pública e Gestão Social, foram analisados os documentos de 2010 e de 2016. O primeiro apresenta 8 semestres como 
+proposta para integralização do curso, quanto o segundo 9 semestres. Há uma siginificativa mudança nas quantidades de pré-requisitos, sendo o PPC de 2016 o de 
+menor número. Ainda, houve redução na carga horária requeria para 
+estágio e para atividades complementares. \\
+
+O número de disciplinas aumentou em um e, apesar da diminuição em horas de estágio e atividades complementares, as cargas horárias das disciplinas aumentaram 
+de modo a ser verificado na diferença de turnos efetivos para o documento de 2016, verificado na Tabela \ref{tab:adm-publica}. \\
+
+Os pré-requisitos foram substancialmente reduzidos de 2010 \cite{adm-publica2010} para 2016 \cite{adm-publica2016}, como verificado no sub-índice de pré-requisitos acumulados na Tabela \ref{tab:adm-publica}. 
+Vale ressaltar também o aumento no índices de Complexidade e Retenção, como anteriormente, causados pelas bifurcações. O PPC de 2010 possui sete bifurcações, 
+sendo uma delas uma disciplina como pré-requisito para mais de duas outras, 
+enquanto o PPC de 2016 consta apenas uma bifurcação simples. \\
+
+A Figura \ref{img:porsemestre-adm-publica} apresenta uma interseção nos gráficos para ambos os índices entre o quarto e quinto semestre. Isto representa que 
+a boa parte dos pré-requisitos do PPC 2016 estão distribuídos em semestres superiores a quatro, visto que a menor inclinação do gráfico indica menor variação 
+dos pré-requisitos ao longo dos semestres iniciais. \\
+
+
+\begin{center}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\multicolumn{3}{|c|}{Administração Pública e Gestão Social} \\ 
+\hline\hline
+	& PPC 2010 & PPC 2016 \\
+\hline
+Turnos Efetivos ($\mathcal{T}_{ppc}$) & 23,90 & 27,17 \\
+\hline
+Peso dos Pré-requisitos ($\mathcal{P}_{ppc}$) & 41,57 & 30,46 \\
+\hline
+Pré-requisitos Acumulados ($\mathcal{R}_{ppc}$) & 47 & 20 \\
+\hline
+Índice de Complexidade ($\Delta_{ppc}$) & 111,00 & 77,00 \\
+\hline
+Índice de Retenção ($\gamma_{ppc}$) & 56,10 & 39,91 \\ 
+\hline
+\end{tabular}
+\caption{Resultados obtidos dos sub-índices e índices para o curso de Administração Pública e Gestão Social.}
+\label{tab:adm-publica}
+\end{table}
+\end{center}
+
+
+\begin{figure}[h]
+	\centering
+	\begin{minipage}[hb]{0.45\textwidth}
+	\begin{tikzpicture}[scale=0.8]
+		\begin{axis}[
+			xlabel={Semestre},
+			ylabel={Índice de Retenção},
+			xtick={1, 2, 3, 4, 5, 6, 7, 8, 9},
+			legend pos = north east,
+		]
+		\addplot[color=blue, mark=square,]
+			coordinates{(1, 59.0978)(2, 49.4466)(3, 42.1019)(4, 33.1722)(5, 25.3237)
+				    (6, 20.1951)(7, 13.7712)(8, 9.0)};
+		
+		\addplot[color=red, mark=triangle,]
+			coordinates{(1, 39.9140)(2, 36.3242)(3, 33.3139)(4, 29.0409)(5, 25.1502)
+				    (6, 19.8476)(7, 16.2353)(8, 12.3311)(9, 7.2897)};
+		\legend{PPC 2010, PPC 2016}
+		\end{axis}
+	\end{tikzpicture}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[hb]{0.45\textwidth}
+	\begin{tikzpicture}[scale=0.8]
+		\begin{axis}[
+			xlabel={Semestre},
+			ylabel={Índice de Complexidade},
+			xtick={1, 2, 3, 4, 5, 6, 7, 8, 9},
+			legend pos = north east,
+		]
+		\addplot[color=blue, mark=square,]
+			coordinates{(1, 112.4706)(2, 95.2509)(3, 78.5718)(4, 56.8873)(5, 40.2573)
+				    (6, 30.4718)(7, 18.1783)(8, 11.6403)};
+		
+		\addplot[color=red, mark=triangle,]
+			coordinates{(1, 77.6392)(2, 68.9288)(3, 61.6153)(4, 52.2193)(5, 46.1007)
+				    (6, 33.8818)(7, 26.0608)(8, 18.8630)(9, 10.5880)};
+		\legend{PPC 2010, PPC 2016}
+		\end{axis}
+	\end{tikzpicture}
+	\end{minipage}
+\caption{Resultado comparativo dos índices por semestre para o curso de Engenharia Civil.}
+\label{img:porsemestre-adm-publica}
+\end{figure}
+
+\vfill
+
+\section*{Conclusão}
+
+Mesmo não sendo objeto de estudo aqui a avaliação qualitativa de PPC's, os resultados obtidos demonstram que os índices quantitaivos desenvolvidos são de 
+significativa valia para gestores de cursos. Além disso, o aplicativo AnálisePPC torna mais prática a atividade de simular mudanças em estruturas curriculares 
+e poder ter noção como tais mudanças podem afetar problemas acadêmicos como desistência trancamento, desistência ou abandono de cursos. \\
+
+Por conseguinte, AnálisePPC é uma ferramenta útil para gestores de cursos. Sendo assim, os autores almejam aplicar melhorias ao aplicativo com visualizações 
+das estruturas curriculares do PPC, como também expandir a ideia a uma plataforma online em que diversas universidades possam compartilhar seus PPC's e 
+ter disponível um banco de dados para possíveis comparações entre estruturas curriculares semelhantes.
+
+
+\bibliographystyle{unsrt}
+\bibliography{references}
 
 \end{document}

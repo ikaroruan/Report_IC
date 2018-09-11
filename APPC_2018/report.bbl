@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+
+\bibitem{book_cormen}
+Thomas~H Cormen, Charles~E Leiserson, Ronald~L Rivest, and Clifford Stein.
+\newblock {\em Introduction to algorithms}.
+\newblock MIT press, 2009.
+
+\bibitem{book_sedgewick}
+Robert Sedgewick and Kevin Wayne.
+\newblock {\em Algorithms}.
+\newblock Addison-Wesley Professional, 2011.
+
+\bibitem{eng-civil2018}
+Universidade~Federal do~Ceará{,}~UFC.
+\newblock {\em Projeto Pedagogico do Curso De Engenharia Civil}, 2018.
+
+\bibitem{eng-civil2008}
+Universidade~Federal do~Ceará{,}~UFC.
+\newblock {\em Projeto Pedagogico do Curso De Engenharia Civil}, 2007.
+\newblock Disponível em:
+  \url{https://www.ufca.edu.br/portal/files/PPC%20Adm%20Pub/PPC_Adm_Publica_Ago_2010.pdf}.
+
+\bibitem{adm-publica2010}
+Universidade~Federal do~Ceará{,}~UFC.
+\newblock {\em Projeto Político-Pedagógico do Curso de Administração
+  Pública: Gestão Pública e Social - Campus do Cariri}, 2010.
+\newblock Disponível em:
+  \url{https://www.ufca.edu.br/portal/files/PPC%20Adm%20Pub/PPC_Adm_Publica_Ago_2010.pdf}.
+
+\bibitem{adm-publica2016}
+Universidade~Federal do~Cariri{,}~UFCA.
+\newblock {\em Projeto Político-Pedagógico do Curso de Bacharelado em
+  Administração Pública e Gestão Social}, 2016.
+\newblock Disponível em:
+  \url{https://www.ufca.edu.br/portal/files/Documentos/PPC_ADM_PUBLICA_2017.pdf}.
+
+\end{thebibliography}
